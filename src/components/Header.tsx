@@ -9,13 +9,13 @@ const Header = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center space-x-3">
-            <div className="flex items-center space-x-2">
+            <Link to="/" className="flex items-center space-x-2">
               <Heart className="h-8 w-8 text-primary fill-current" />
               <div className="leading-tight">
                 <span className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">PetPal</span>
                 <div className="text-xs text-muted-foreground">Adopt · Care · Connect</div>
               </div>
-            </div>
+            </Link>
           </div>
 
           {/* Navigation - Desktop */}
