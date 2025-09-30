@@ -31,9 +31,7 @@ const Header = ({ onAboutClick }: HeaderProps) => {
             <Link to="/forum" className="text-foreground hover:text-primary transition-colors duration-300 font-medium">
               Community
             </Link>
-            <Link to="/" className="text-foreground hover:text-primary transition-colors duration-300 font-medium">
-              About
-            </Link>
+            <button onClick={onAboutClick} className="text-foreground hover:text-primary transition-colors duration-300 font-medium bg-transparent">About</button>
           </nav>
 
           {/* Actions */}
