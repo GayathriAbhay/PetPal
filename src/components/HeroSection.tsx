@@ -28,6 +28,7 @@ const HeroSection = () => {
             <Heart className="h-5 w-5 text-white/35 fill-current" />
           </div>
 
+          <div className="mb-4 inline-block px-3 py-1 rounded-full bg-white/10 text-white text-sm font-medium">ADOPT · CARE · CONNECT</div>
           <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
             Find Your
             <span className="block bg-gradient-to-r from-yellow-300 to-white bg-clip-text text-transparent animate-pulse-glow">

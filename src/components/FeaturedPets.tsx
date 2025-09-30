@@ -67,10 +67,12 @@ const FeaturedPets = () => {
 
         {/* View All Button */}
         <div className="text-center">
-          <Button variant="hero" size="lg" className="group">
-            View All Pets
-            <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
-          </Button>
+          <a href="/pets">
+            <Button variant="hero" size="lg" className="group">
+              View All Pets
+              <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
+            </Button>
+          </a>
         </div>
       </div>
     </section>
