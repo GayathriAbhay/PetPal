@@ -20,18 +20,18 @@ const Header = () => {
 
           {/* Navigation - Desktop */}
           <nav className="hidden md:flex items-center space-x-8">
-            <a href="#" className="text-foreground hover:text-primary transition-colors duration-300 font-medium">
+            <Link to="/pets" className="text-foreground hover:text-primary transition-colors duration-300 font-medium">
               Adopt
-            </a>
-            <a href="#" className="text-foreground hover:text-primary transition-colors duration-300 font-medium">
+            </Link>
+            <Link to="/pets" className="text-foreground hover:text-primary transition-colors duration-300 font-medium">
               Care
-            </a>
-            <a href="#" className="text-foreground hover:text-primary transition-colors duration-300 font-medium">
+            </Link>
+            <Link to="/forum" className="text-foreground hover:text-primary transition-colors duration-300 font-medium">
               Community
-            </a>
-            <a href="#" className="text-foreground hover:text-primary transition-colors duration-300 font-medium">
+            </Link>
+            <Link to="/" className="text-foreground hover:text-primary transition-colors duration-300 font-medium">
               About
-            </a>
+            </Link>
           </nav>
 
           {/* Actions */}
