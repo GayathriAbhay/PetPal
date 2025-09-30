@@ -11,6 +11,7 @@ import PetDetail from "@/pages/PetDetail";
 import AddPet from "@/pages/AddPet";
 import Alerts from "@/pages/Alerts";
 import Forum from "@/pages/Forum";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 const queryClient = new QueryClient();
 
