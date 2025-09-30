@@ -2,7 +2,9 @@ import { Heart, Menu, Search, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
-const Header = () => {
+type HeaderProps = { onAboutClick?: () => void };
+
+const Header = ({ onAboutClick }: HeaderProps) => {
   return (
     <header className="sticky top-0 z-50 bg-gradient-to-r from-white/70 to-white/30 dark:from-black/60 dark:to-black/30 backdrop-blur-md border-b border-border shadow">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
