@@ -6,6 +6,15 @@ import { usePetContext } from "@/context/PetContext";
 type HeaderProps = { onAboutClick?: () => void };
 
 const Header = ({ onAboutClick }: HeaderProps) => {
+  // attempt to read alerts from context if available
+  let alertsCount = 0;
+  try {
+    const ctx = usePetContext();
+    alertsCount = ctx.alerts.filter((a) => !a.resolved).length;
+  } catch (e) {
+    alertsCount = 0;
+  }
+
   return (
     <header className="sticky top-0 z-50 bg-gradient-to-r from-white/70 to-white/30 dark:from-black/60 dark:to-black/30 backdrop-blur-md border-b border-border shadow">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -48,15 +57,7 @@ const Header = ({ onAboutClick }: HeaderProps) => {
               </Button>
               {/* badge */}
               <span className="absolute -top-1 -right-1 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-semibold text-white bg-red-500 rounded-full">
-                {(() => {
-                  try {
-                    const { alerts } = usePetContext();
-                    const n = alerts.filter((a) => !a.resolved).length;
-                    return n > 0 ? n : null;
-                  } catch (e) {
-                    return null;
-                  }
-                })()}
+                {alertsCount > 0 ? alertsCount : null}
               </span>
             </Link>
 
