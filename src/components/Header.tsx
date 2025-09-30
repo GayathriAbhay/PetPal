@@ -74,16 +74,26 @@ const Header = ({ onAboutClick }: HeaderProps) => {
               </span>
             </Link>
 
-            <Button variant="outline" className="hidden sm:flex">
-              <User className="h-4 w-4 mr-2" />
-              Sign In
-            </Button>
+            {user ? (
+              <div className="hidden sm:flex items-center space-x-3">
+                <div className="text-sm font-medium">{user.name}</div>
+                <Button variant="outline" onClick={() => logout()}>Sign Out</Button>
+              </div>
+            ) : (
+              <>
+                <Button variant="outline" className="hidden sm:flex" onClick={() => setShowSignIn(true)}>
+                  <User className="h-4 w-4 mr-2" />
+                  Sign In
+                </Button>
+                <SignInModal open={showSignIn} onClose={() => setShowSignIn(false)} />
+              </>
+            )}
+
             {/* Mobile menu button */}
             <Button variant="ghost" size="icon" className="md:hidden">
               <Menu className="h-5 w-5" />
             </Button>
-          </div>
-        </div>
+          </div>        </div>
       </div>
     </header>
   );
