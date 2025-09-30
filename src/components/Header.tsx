@@ -76,13 +76,12 @@ const Header = ({ onAboutClick }: HeaderProps) => {
                 <Button variant="outline" onClick={() => logout()}>Sign Out</Button>
               </div>
             ) : (
-              <>
-                <Button variant="outline" className="hidden sm:flex" onClick={() => setShowSignIn(true)}>
+              <Link to="/sign-in">
+                <Button variant="outline" className="hidden sm:flex">
                   <User className="h-4 w-4 mr-2" />
                   Sign In
                 </Button>
-                <SignInModal open={showSignIn} onClose={() => setShowSignIn(false)} />
-              </>
+              </Link>
             )}
 
             {/* Mobile menu button */}
