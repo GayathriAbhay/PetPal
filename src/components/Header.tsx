@@ -2,6 +2,9 @@ import { Heart, Menu, Search, User, Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { usePetContext } from "@/context/PetContext";
+import { useAuth } from "@/context/AuthContext";
+import { useState } from "react";
+import SignInModal from "@/components/SignInModal";
 
 type HeaderProps = { onAboutClick?: () => void };
 
@@ -14,6 +17,16 @@ const Header = ({ onAboutClick }: HeaderProps) => {
   } catch (e) {
     alertsCount = 0;
   }
+
+  const { user, logout } = (() => {
+    try {
+      return useAuth();
+    } catch (e) {
+      return { user: null, logout: () => {} } as any;
+    }
+  })();
+
+  const [showSignIn, setShowSignIn] = useState(false);
 
   return (
     <header className="sticky top-0 z-50 bg-gradient-to-r from-white/70 to-white/30 dark:from-black/60 dark:to-black/30 backdrop-blur-md border-b border-border shadow">
@@ -61,16 +74,26 @@ const Header = ({ onAboutClick }: HeaderProps) => {
               </span>
             </Link>
 
-            <Button variant="outline" className="hidden sm:flex">
-              <User className="h-4 w-4 mr-2" />
-              Sign In
-            </Button>
+            {user ? (
+              <div className="hidden sm:flex items-center space-x-3">
+                <div className="text-sm font-medium">{user.name}</div>
+                <Button variant="outline" onClick={() => logout()}>Sign Out</Button>
+              </div>
+            ) : (
+              <>
+                <Button variant="outline" className="hidden sm:flex" onClick={() => setShowSignIn(true)}>
+                  <User className="h-4 w-4 mr-2" />
+                  Sign In
+                </Button>
+                <SignInModal open={showSignIn} onClose={() => setShowSignIn(false)} />
+              </>
+            )}
+
             {/* Mobile menu button */}
             <Button variant="ghost" size="icon" className="md:hidden">
               <Menu className="h-5 w-5" />
             </Button>
-          </div>
-        </div>
+          </div>        </div>
       </div>
     </header>
   );
