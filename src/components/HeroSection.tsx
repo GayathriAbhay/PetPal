@@ -1,6 +1,7 @@
 import { Heart, Search, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-pets.jpg";
 
 const HeroSection = () => {
