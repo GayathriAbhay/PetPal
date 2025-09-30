@@ -18,6 +18,16 @@ const Header = ({ onAboutClick }: HeaderProps) => {
     alertsCount = 0;
   }
 
+  const { user, logout } = (() => {
+    try {
+      return useAuth();
+    } catch (e) {
+      return { user: null, logout: () => {} } as any;
+    }
+  })();
+
+  const [showSignIn, setShowSignIn] = useState(false);
+
   return (
     <header className="sticky top-0 z-50 bg-gradient-to-r from-white/70 to-white/30 dark:from-black/60 dark:to-black/30 backdrop-blur-md border-b border-border shadow">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
