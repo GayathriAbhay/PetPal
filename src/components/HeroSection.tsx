@@ -60,13 +60,17 @@ const HeroSection = () => {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button variant="hero" size="xl" className="group">
-              <Heart className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform duration-300" />
-              Start Adopting
-            </Button>
-            <Button variant="outline" size="xl" className="bg-white/10 border-white/30 text-white hover:bg-white/20">
-              Learn More
-            </Button>
+            <Link to="/pets">
+              <Button variant="hero" size="xl" className="group">
+                <Heart className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform duration-300" />
+                Start Adopting
+              </Button>
+            </Link>
+            <Link to="/#about">
+              <Button variant="outline" size="xl" className="bg-white/10 border-white/30 text-white hover:bg-white/20">
+                Learn More
+              </Button>
+            </Link>
           </div>
 
           {/* Stats */}
