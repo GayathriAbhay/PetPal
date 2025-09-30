@@ -78,7 +78,7 @@ const Header = ({ onAboutClick }: HeaderProps) => {
                 <Button variant="outline" onClick={() => logout()}>Sign Out</Button>
               </div>
             ) : (
-              <Link to="/sign-in" state={{ from: window.location.pathname }}>
+              <Link to="/sign-in" state={{ from: location.pathname }}>
                 <Button variant="outline" className="hidden sm:flex">
                   <User className="h-4 w-4 mr-2" />
                   Sign In
