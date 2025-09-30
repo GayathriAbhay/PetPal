@@ -12,6 +12,7 @@ import AddPet from "@/pages/AddPet";
 import Alerts from "@/pages/Alerts";
 import Forum from "@/pages/Forum";
 import Care from "@/pages/Care";
+import SignIn from "@/pages/SignIn";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { AuthProvider } from "@/context/AuthContext";
 
