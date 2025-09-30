@@ -35,7 +35,7 @@ const Header = ({ onAboutClick }: HeaderProps) => {
             <Link to="/pets" className="text-foreground hover:text-primary transition-colors duration-300 font-medium">
               Adopt
             </Link>
-            <Link to="/pets" className="text-foreground hover:text-primary transition-colors duration-300 font-medium">
+            <Link to="/care" className="text-foreground hover:text-primary transition-colors duration-300 font-medium">
               Care
             </Link>
             <Link to="/forum" className="text-foreground hover:text-primary transition-colors duration-300 font-medium">
