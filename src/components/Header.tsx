@@ -1,10 +1,8 @@
 import { Heart, Menu, Search, User, Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { usePetContext } from "@/context/PetContext";
 import { useAuth } from "@/context/AuthContext";
-import { useState } from "react";
-import SignInModal from "@/components/SignInModal";
 
 type HeaderProps = { onAboutClick?: () => void };
 
@@ -26,7 +24,7 @@ const Header = ({ onAboutClick }: HeaderProps) => {
     }
   })();
 
-  const [showSignIn, setShowSignIn] = useState(false);
+  const location = useLocation();
 
   return (
     <header className="sticky top-0 z-50 bg-gradient-to-r from-white/70 to-white/30 dark:from-black/60 dark:to-black/30 backdrop-blur-md border-b border-border shadow">
@@ -80,13 +78,12 @@ const Header = ({ onAboutClick }: HeaderProps) => {
                 <Button variant="outline" onClick={() => logout()}>Sign Out</Button>
               </div>
             ) : (
-              <>
-                <Button variant="outline" className="hidden sm:flex" onClick={() => setShowSignIn(true)}>
+              <Link to="/sign-in" state={{ from: location.pathname }}>
+                <Button variant="outline" className="hidden sm:flex">
                   <User className="h-4 w-4 mr-2" />
                   Sign In
                 </Button>
-                <SignInModal open={showSignIn} onClose={() => setShowSignIn(false)} />
-              </>
+              </Link>
             )}
 
             {/* Mobile menu button */}

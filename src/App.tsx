@@ -12,6 +12,7 @@ import AddPet from "@/pages/AddPet";
 import Alerts from "@/pages/Alerts";
 import Forum from "@/pages/Forum";
 import Care from "@/pages/Care";
+import SignIn from "@/pages/SignIn";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { AuthProvider } from "@/context/AuthContext";
 
@@ -32,6 +33,7 @@ const App = () => (
                 <Route path="/pets/:id" element={<PetDetail />} />
                 <Route path="/add-pet" element={<AddPet />} />
                 <Route path="/care" element={<Care />} />
+                <Route path="/sign-in" element={<SignIn />} />
                 <Route path="/alerts" element={<Alerts />} />
                 <Route path="/forum" element={<Forum />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
