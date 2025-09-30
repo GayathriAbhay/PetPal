@@ -24,11 +24,13 @@ const Index = () => {
 
       {showAbout && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="max-w-4xl w-full relative">
-            <button onClick={() => setShowAbout(false)} className="absolute -top-3 -right-3 bg-card p-2 rounded-full shadow">
-              Close
-            </button>
-            <AboutSection />
+          <div className="max-w-4xl w-full relative mx-auto max-h-[90vh] overflow-auto bg-transparent">
+            <div className="bg-card p-6 rounded-2xl shadow relative">
+              <button onClick={() => setShowAbout(false)} className="absolute top-3 right-3 bg-background p-2 rounded-full shadow">
+                Close
+              </button>
+              <AboutSection />
+            </div>
           </div>
         </div>
       )}
