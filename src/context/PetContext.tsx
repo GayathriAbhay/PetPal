@@ -1,5 +1,14 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { v4 as uuid } from "uuid";
+const generateId = () => {
+  try {
+    if (typeof crypto !== "undefined" && (crypto as any).randomUUID) {
+      return (crypto as any).randomUUID();
+    }
+  } catch (e) {
+    // ignore
+  }
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 9);
+};
 
 // Types
 export type Pet = {
@@ -165,7 +174,7 @@ export const PetProvider = ({ children }: { children: React.ReactNode }) => {
   }, [adoptionRequests]);
 
   const addPet = (p: Omit<Pet, "id">) => {
-    const newPet: Pet = { ...p, id: uuid() };
+    const newPet: Pet = { ...p, id: generateId() };
     setPets((s) => [newPet, ...s]);
     return newPet;
   };
@@ -177,7 +186,7 @@ export const PetProvider = ({ children }: { children: React.ReactNode }) => {
   const getPet = (id: string) => pets.find((p) => p.id === id);
 
   const addHealthRecord = (r: Omit<HealthRecord, "id" | "date"> & { date?: string }) => {
-    const record: HealthRecord = { ...r, id: uuid(), date: r.date || new Date().toISOString() } as HealthRecord;
+    const record: HealthRecord = { ...r, id: generateId(), date: r.date || new Date().toISOString() } as HealthRecord;
     setHealthRecords((s) => [record, ...s]);
     return record;
   };
@@ -185,7 +194,7 @@ export const PetProvider = ({ children }: { children: React.ReactNode }) => {
   const getHealthForPet = (petId: string) => healthRecords.filter((h) => h.petId === petId);
 
   const addAlert = (a: Omit<Alert, "id" | "date"> & { date?: string }) => {
-    const alert: Alert = { ...a, id: uuid(), date: a.date || new Date().toISOString(), resolved: a.resolved || false };
+    const alert: Alert = { ...a, id: generateId(), date: a.date || new Date().toISOString(), resolved: a.resolved || false };
     setAlerts((s) => [alert, ...s]);
     return alert;
   };
@@ -193,7 +202,7 @@ export const PetProvider = ({ children }: { children: React.ReactNode }) => {
   const getAlerts = () => alerts;
 
   const addPost = (p: Omit<Post, "id" | "date">) => {
-    const post: Post = { ...p, id: uuid(), date: new Date().toISOString() };
+    const post: Post = { ...p, id: generateId(), date: new Date().toISOString() };
     setPosts((s) => [post, ...s]);
     return post;
   };
@@ -201,7 +210,7 @@ export const PetProvider = ({ children }: { children: React.ReactNode }) => {
   const getPosts = () => posts;
 
   const requestAdoption = (r: Omit<AdoptionRequest, "id" | "date" | "status">) => {
-    const req: AdoptionRequest = { ...r, id: uuid(), date: new Date().toISOString(), status: "pending" };
+    const req: AdoptionRequest = { ...r, id: generateId(), date: new Date().toISOString(), status: "pending" };
     setAdoptionRequests((s) => [req, ...s]);
     return req;
   };
