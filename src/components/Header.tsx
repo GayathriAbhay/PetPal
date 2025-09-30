@@ -2,6 +2,9 @@ import { Heart, Menu, Search, User, Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { usePetContext } from "@/context/PetContext";
+import { useAuth } from "@/context/AuthContext";
+import { useState } from "react";
+import SignInModal from "@/components/SignInModal";
 
 type HeaderProps = { onAboutClick?: () => void };
 
