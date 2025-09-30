@@ -1,6 +1,7 @@
-import { Heart, Menu, Search, User } from "lucide-react";
+import { Heart, Menu, Search, User, Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { usePetContext } from "@/context/PetContext";
 
 type HeaderProps = { onAboutClick?: () => void };
 
