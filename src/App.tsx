@@ -5,6 +5,12 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import { PetProvider } from "@/context/PetContext";
+import Pets from "@/pages/Pets";
+import PetDetail from "@/pages/PetDetail";
+import AddPet from "@/pages/AddPet";
+import Alerts from "@/pages/Alerts";
+import Forum from "@/pages/Forum";
 
 const queryClient = new QueryClient();
 
