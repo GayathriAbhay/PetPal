@@ -65,10 +65,6 @@ const Header = ({ onAboutClick }: HeaderProps) => {
               <User className="h-4 w-4 mr-2" />
               Sign In
             </Button>
-            <Link to="/add-pet"><Button variant="hero" className="hidden sm:flex">
-              List Pet
-            </Button></Link>
-
             {/* Mobile menu button */}
             <Button variant="ghost" size="icon" className="md:hidden">
               <Menu className="h-5 w-5" />
