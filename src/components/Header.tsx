@@ -36,17 +36,17 @@ const Header = () => {
 
           {/* Actions */}
           <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="icon" className="hidden sm:flex">
+            <Link to="/pets"><Button variant="ghost" size="icon" className="hidden sm:flex">
               <Search className="h-5 w-5" />
-            </Button>
+            </Button></Link>
             <Button variant="outline" className="hidden sm:flex">
               <User className="h-4 w-4 mr-2" />
               Sign In
             </Button>
-            <Button variant="hero" className="hidden sm:flex">
+            <Link to="/add-pet"><Button variant="hero" className="hidden sm:flex">
               List Pet
-            </Button>
-            
+            </Button></Link>
+
             {/* Mobile menu button */}
             <Button variant="ghost" size="icon" className="md:hidden">
               <Menu className="h-5 w-5" />
