@@ -1,6 +1,6 @@
 import { Heart, Menu, Search, User, Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { usePetContext } from "@/context/PetContext";
 import { useAuth } from "@/context/AuthContext";
 
