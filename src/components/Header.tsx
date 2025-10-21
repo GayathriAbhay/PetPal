@@ -1,8 +1,10 @@
+'use client';
 import { Heart, Menu, Search, User, Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from "react-router-dom";
 import { usePetContext } from "@/context/PetContext";
 import { useAuth } from "@/context/AuthContext";
+import { signOut } from "next-auth/react";
 
 type HeaderProps = { onAboutClick?: () => void };
 
@@ -75,7 +77,20 @@ const Header = ({ onAboutClick }: HeaderProps) => {
             {user ? (
               <div className="hidden sm:flex items-center space-x-3">
                 <div className="text-sm font-medium">{user.name}</div>
-                <Button variant="outline" onClick={() => logout()}>Sign Out</Button>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    try {
+                      // clear local auth state
+                      logout();
+                    } finally {
+                      // trigger NextAuth sign out (if configured)
+                      void signOut({ callbackUrl: "/" });
+                    }
+                  }}
+                >
+                  Sign Out
+                </Button>
               </div>
             ) : (
               <Link to="/sign-in" state={{ from: location.pathname }}>
