@@ -1,0 +1,14 @@
+{
+  "build": {
+    "env": {
+      "VITE_SHADCN_TS_BUILD_ENV": "production"
+    }
+  },
+  "routes": [
+    {
+      "src": "/[^.]+",
+      "dest": "/index.html"
+    }
+  ],
+  "outputDirectory": "dist"
+}
