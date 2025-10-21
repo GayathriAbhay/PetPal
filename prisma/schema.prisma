@@ -1,6 +1,9 @@
+// This is your complete Prisma schema file,
+// tailored for NextAuth.js and MySQL (TiDB) compatibility.
+
 generator client {
   provider = "prisma-client-js"
-  // previewFeatures = ["driverAdapters"]
+  // previewFeatures = ["driverAdapters"] // Enable this line when deploying to Vercel/Netlify with the TiDB adapter
 }
 
 datasource db {
@@ -9,21 +12,25 @@ datasource db {
 }
 
 // --- NextAuth Models ---
-model Account {
-  id                 String  @id @default(cuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?  @map("refresh_token")
-  access_token       String?  @map("access_token")
-  expires_at         Int?     @map("expires_at")
-  token_type         String?  @map("token_type")
-  scope              String?
-  id_token           String?  @map("id_token")
-  session_state      String?  @map("session_state")
 
-  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  
+  // Use @db.Text for MySQL compatibility with potentially long tokens/secrets
+  refresh_token     String? @db.Text @map("refresh_token")
+  access_token      String? @db.Text @map("access_token")
+  
+  expires_at        Int?    @map("expires_at")
+  token_type        String? @map("token_type")
+  scope             String?
+  id_token          String? @db.Text @map("id_token")
+  session_state     String? @map("session_state")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
   @@map("accounts")
@@ -35,7 +42,7 @@ model Session {
   userId       String   @map("user_id")
   expires      DateTime
 
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("sessions")
 }
@@ -44,6 +51,7 @@ model User {
   id            String    @id @default(cuid())
   name          String?
   email         String?   @unique
+  password      String?   // <--- CRUCIAL: Added for Credentials Provider (stores bcrypt hash)
   emailVerified DateTime? @map("email_verified")
   image         String?
   accounts      Account[]
@@ -60,3 +68,4 @@ model VerificationToken {
   @@map("verification_tokens")
   @@unique([identifier, token])
 }
+
