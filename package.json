@@ -4,11 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "build:dev": "vite build --mode development",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "next start -p 3000"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.0",
@@ -55,6 +55,7 @@
     "framer-motion": "^12.23.7",
     "input-otp": "^1.2.4",
     "lucide-react": "^0.462.0",
+    "next": "^14.0.0",
     "next-auth": "^4.24.11",
     "next-themes": "^0.3.0",
     "prisma": "^6.17.1",
