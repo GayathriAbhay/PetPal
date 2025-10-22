@@ -111,3 +111,18 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
   }
 }
+
+/* simple loader */
+.loader {
+  width: 36px;
+  height: 36px;
+  border-radius: 9999px;
+  border: 4px solid rgba(0,0,0,0.08);
+  border-top-color: hsl(var(--primary));
+  animation: spin 1s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

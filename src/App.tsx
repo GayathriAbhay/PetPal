@@ -13,6 +13,9 @@ import Alerts from "@/pages/Alerts";
 import Forum from "@/pages/Forum";
 import Care from "@/pages/Care";
 import SignIn from "@/pages/SignIn";
+import Forgot from "@/pages/Forgot";
+import Account from "@/pages/Account";
+import ResetPassword from "@/pages/ResetPassword";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { AuthProvider } from "@/context/AuthContext";
 
@@ -34,6 +37,9 @@ const App = () => (
                 <Route path="/add-pet" element={<AddPet />} />
                 <Route path="/care" element={<Care />} />
                 <Route path="/sign-in" element={<SignIn />} />
+                <Route path="/account" element={<Account />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
+                <Route path="/forgot" element={<Forgot />} />
                 <Route path="/alerts" element={<Alerts />} />
                 <Route path="/forum" element={<Forum />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

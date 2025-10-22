@@ -9,6 +9,7 @@ const PetDetail = () => {
   const { getPet, getHealthForPet, addHealthRecord, requestAdoption } = usePetContext();
   const pet = id ? getPet(id) : undefined;
   const records = id ? getHealthForPet(id) : [];
+  const { loading } = (usePetContext() as any);
   const [note, setNote] = useState("");
   const [requestName, setRequestName] = useState("");
 
@@ -61,14 +62,19 @@ const PetDetail = () => {
               </form>
 
               <div className="space-y-3">
-                {records.length === 0 && <div className="text-sm text-muted-foreground">No records yet.</div>}
-                {records.map((r) => (
-                  <div key={r.id} className="p-3 bg-background rounded-md border border-input">
-                    <div className="text-sm font-semibold">{r.title}</div>
-                    <div className="text-xs text-muted-foreground">{new Date(r.date).toLocaleDateString()}</div>
-                    <div className="text-sm mt-1">{r.notes}</div>
-                  </div>
-                ))}
+                {loading ? (
+                  <div className="text-sm text-muted-foreground">Loading records...</div>
+                ) : records.length === 0 ? (
+                  <div className="text-sm text-muted-foreground">No records yet.</div>
+                ) : (
+                  records.map((r) => (
+                    <div key={r.id} className="p-3 bg-background rounded-md border border-input">
+                      <div className="text-sm font-semibold">{r.title}</div>
+                      <div className="text-xs text-muted-foreground">{new Date(r.date).toLocaleDateString()}</div>
+                      <div className="text-sm mt-1">{r.notes}</div>
+                    </div>
+                  ))
+                )}
               </div>
             </div>
 

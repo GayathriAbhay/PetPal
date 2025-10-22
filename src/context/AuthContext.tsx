@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { toast } from "@/hooks/use-toast";
+import { apiFetch } from "@/lib/api";
 
 type User = {
   id: string;
@@ -9,25 +10,40 @@ type User = {
 
 type AuthContextValue = {
   user: User | null;
-  login: (data: { name: string; email?: string; password?: string }) => Promise<User>;
+  login: (data: { email: string; password: string }) => Promise<User>;
+  register: (data: { name?: string; email: string; password: string }) => Promise<User>;
   logout: () => void;
+  updateProfile: (data: { name?: string; email?: string }) => Promise<User>;
+  changePassword: (data: { currentPassword: string; newPassword: string }) => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 const STORAGE_KEY = "petpal_user_v1";
 
-const fakeId = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
-
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<User | null>(() => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? JSON.parse(raw) : null;
-    } catch (e) {
-      return null;
-    }
-  });
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    // try to fetch current user from server
+    let mounted = true;
+    (async () => {
+      try {
+        const me = await apiFetch("/api/me");
+        if (me && mounted) {
+          setUser(me);
+          try { localStorage.setItem(STORAGE_KEY, JSON.stringify(me)); } catch (e) {}
+        }
+      } catch (e) {
+        // fallback to local storage
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (raw) setUser(JSON.parse(raw));
+        } catch (e) {}
+      }
+    })();
+    return () => { mounted = false; };
+  }, []);
 
   useEffect(() => {
     try {
@@ -36,25 +52,61 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     } catch (e) {}
   }, [user]);
 
-  const login = async ({ name, email }: { name: string; email?: string }) => {
-    if (!name) {
-      toast({ title: "Login failed", description: "Please provide a name." });
-      throw new Error("Missing name");
+  const login = async ({ email, password }: { email: string; password: string }) => {
+    try {
+      const res = await apiFetch("/api/auth/login", { method: "POST", body: JSON.stringify({ email, password }) });
+      setUser(res);
+      toast({ title: "Signed in", description: `Welcome, ${res.name || res.email}!` });
+      return res;
+    } catch (e: any) {
+      toast({ title: "Sign in failed", description: e.message || String(e) });
+      throw e;
     }
-    // fake delay
-    await new Promise((res) => setTimeout(res, 300));
-    const u = { id: fakeId(), name, email };
-    setUser(u);
-    toast({ title: "Signed in", description: `Welcome, ${name}!` });
-    return u;
   };
 
-  const logout = () => {
+  const register = async ({ name, email, password }: { name?: string; email: string; password: string }) => {
+    try {
+      const res = await apiFetch("/api/auth/register", { method: "POST", body: JSON.stringify({ name, email, password }) });
+      setUser(res);
+      toast({ title: "Account created", description: `Welcome, ${res.name || res.email}!` });
+      return res;
+    } catch (e: any) {
+      toast({ title: "Registration failed", description: e.message || String(e) });
+      throw e;
+    }
+  };
+
+  const logout = async () => {
+    try {
+      await apiFetch("/api/auth/logout", { method: "POST" });
+    } catch (e) {}
     setUser(null);
     toast({ title: "Signed out", description: "You have been signed out." });
   };
 
-  return <AuthContext.Provider value={{ user, login, logout }}>{children}</AuthContext.Provider>;
+  const updateProfile = async ({ name, email }: { name?: string; email?: string }) => {
+    try {
+      const res = await apiFetch("/api/auth/update-profile", { method: "POST", body: JSON.stringify({ name, email }) });
+      setUser(res);
+      toast({ title: "Profile updated" });
+      return res;
+    } catch (e: any) {
+      toast({ title: "Update failed", description: e.message || String(e) });
+      throw e;
+    }
+  };
+
+  const changePassword = async ({ currentPassword, newPassword }: { currentPassword: string; newPassword: string }) => {
+    try {
+      await apiFetch("/api/auth/change-password", { method: "POST", body: JSON.stringify({ currentPassword, newPassword }) });
+      toast({ title: "Password changed" });
+    } catch (e: any) {
+      toast({ title: "Change password failed", description: e.message || String(e) });
+      throw e;
+    }
+  };
+
+  return <AuthContext.Provider value={{ user, login, register, logout, updateProfile, changePassword }}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => {

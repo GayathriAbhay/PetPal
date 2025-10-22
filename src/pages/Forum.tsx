@@ -3,7 +3,7 @@ import { usePetContext } from "@/context/PetContext";
 import { Button } from "@/components/ui/button";
 
 const Forum = () => {
-  const { posts, addPost } = usePetContext();
+  const { posts, addPost, loading } = usePetContext();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [author, setAuthor] = useState("");
@@ -31,17 +31,22 @@ const Forum = () => {
         </form>
 
         <div className="space-y-4">
-          {posts.length === 0 && <div className="text-muted-foreground">No posts yet.</div>}
-          {posts.map((p) => (
-            <div key={p.id} className="p-4 bg-background rounded-md border border-input">
-              <div className="flex items-center justify-between mb-2">
-                <div className="font-semibold">{p.title}</div>
-                <div className="text-xs text-muted-foreground">{new Date(p.date).toLocaleString()}</div>
+          {loading ? (
+            <div className="text-muted-foreground">Loading posts...</div>
+          ) : posts.length === 0 ? (
+            <div className="text-muted-foreground">No posts yet.</div>
+          ) : (
+            posts.map((p) => (
+              <div key={p.id} className="p-4 bg-background rounded-md border border-input">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="font-semibold">{p.title}</div>
+                  <div className="text-xs text-muted-foreground">{new Date(p.date).toLocaleString()}</div>
+                </div>
+                <div className="text-sm text-muted-foreground mb-2">by {p.author || "Anonymous"}</div>
+                <div>{p.content}</div>
               </div>
-              <div className="text-sm text-muted-foreground mb-2">by {p.author || "Anonymous"}</div>
-              <div>{p.content}</div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
     </section>

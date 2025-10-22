@@ -1,9 +1,5 @@
-// This is your complete Prisma schema file,
-// tailored for NextAuth.js and MySQL (TiDB) compatibility.
-
 generator client {
   provider = "prisma-client-js"
-  // previewFeatures = ["driverAdapters"] // Enable this line when deploying to Vercel/Netlify with the TiDB adapter
 }
 
 datasource db {
@@ -19,11 +15,8 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  
-  // Use @db.Text for MySQL compatibility with potentially long tokens/secrets
   refresh_token     String? @db.Text @map("refresh_token")
   access_token      String? @db.Text @map("access_token")
-  
   expires_at        Int?    @map("expires_at")
   token_type        String? @map("token_type")
   scope             String?
@@ -51,11 +44,14 @@ model User {
   id            String    @id @default(cuid())
   name          String?
   email         String?   @unique
-  password      String?   // <--- CRUCIAL: Added for Credentials Provider (stores bcrypt hash)
+  password      String?
   emailVerified DateTime? @map("email_verified")
   image         String?
   accounts      Account[]
   sessions      Session[]
+  posts         Post[]
+  alerts        Alert[]
+  adoptionRequests AdoptionRequest[]
 
   @@map("users")
 }
@@ -74,7 +70,7 @@ model VerificationToken {
 model Pet {
   id            String          @id @default(cuid())
   name          String
-  species       String          // e.g., Dog, Cat
+  species       String
   breed         String?
   age           Int?
   sex           String?
@@ -85,6 +81,7 @@ model Pet {
   bio           String?         @db.Text
   createdAt     DateTime        @default(now())
   medicalRecords MedicalRecord[]
+  adoptionRequests AdoptionRequest[]
 
   @@map("pets")
 }
@@ -102,4 +99,41 @@ model MedicalRecord {
   createdAt   DateTime @default(now())
 
   @@map("medical_records")
+}
+
+model Post {
+  id        String   @id @default(cuid())
+  authorId  String?
+  author    User?    @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  title     String
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+
+  @@map("posts")
+}
+
+model Alert {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  petId     String?
+  title     String
+  location  String?
+  resolved  Boolean  @default(false)
+  date      DateTime @default(now())
+
+  @@map("alerts")
+}
+
+model AdoptionRequest {
+  id        String   @id @default(cuid())
+  petId     String
+  pet       Pet      @relation(fields: [petId], references: [id], onDelete: Cascade)
+  requesterId String?
+  requester User?    @relation(fields: [requesterId], references: [id], onDelete: SetNull)
+  message   String?  @db.Text
+  date      DateTime @default(now())
+  status    String   @default("pending")
+
+  @@map("adoption_requests")
 }
