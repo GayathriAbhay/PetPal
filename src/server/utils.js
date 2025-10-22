@@ -5,11 +5,15 @@ export const JWT_SECRET = process.env.JWT_SECRET || process.env.NEXTAUTH_SECRET 
 
 export function parseCookies(req) {
   const header = req.headers?.cookie || '';
-  return header.split(';').map(c => c.trim()).filter(Boolean).reduce((acc, cur) => {
-    const [k, ...v] = cur.split('=');
-    acc[k] = decodeURIComponent(v.join('='));
-    return acc;
-  }, {});
+  return header
+    .split(';')
+    .map((c) => c.trim())
+    .filter(Boolean)
+    .reduce((acc, cur) => {
+      const [k, ...v] = cur.split('=');
+      acc[k] = decodeURIComponent(v.join('='));
+      return acc;
+    }, {});
 }
 
 export function getTokenFromReq(req) {
@@ -29,7 +33,6 @@ export function verifyToken(token) {
 }
 
 export function setAuthCookie(res, token) {
-  // Set cookie for Vercel serverless response
   const cookie = `${COOKIE_NAME}=${token}; HttpOnly; Path=/; Max-Age=${7 * 24 * 3600}; SameSite=Lax`;
   const prev = res.getHeader('Set-Cookie');
   if (prev) {
