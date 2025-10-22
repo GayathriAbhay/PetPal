@@ -65,6 +65,7 @@ type PetContextValue = {
   alerts: Alert[];
   posts: Post[];
   adoptionRequests: AdoptionRequest[];
+  loading: boolean;
   addPet: (p: Omit<Pet, "id">) => Promise<Pet>;
   updatePet: (id: string, patch: Partial<Pet>) => void;
   getPet: (id: string) => Pet | undefined;
@@ -83,6 +84,7 @@ const StorageKeys = {
   alerts: "petpal_alerts_v1",
   posts: "petpal_posts_v1",
   adoption: "petpal_adoption_v1",
+  queue: "petpal_queue_v1",
 };
 
 const PetContext = createContext<PetContextValue | undefined>(undefined);
@@ -133,6 +135,8 @@ export const PetProvider = ({ children }: { children: React.ReactNode }) => {
     }
   });
 
+  const [loading, setLoading] = useState<boolean>(true);
+
   // Sync with server on mount
   useEffect(() => {
     let mounted = true;
@@ -153,6 +157,8 @@ export const PetProvider = ({ children }: { children: React.ReactNode }) => {
         if (serverAdoptions) setAdoptionRequests(serverAdoptions as AdoptionRequest[]);
       } catch (e) {
         // ignore, keep local fallback
+      } finally {
+        setLoading(false);
       }
     })();
     return () => { mounted = false; };
@@ -178,6 +184,59 @@ export const PetProvider = ({ children }: { children: React.ReactNode }) => {
     localStorage.setItem(StorageKeys.adoption, JSON.stringify(adoptionRequests));
   }, [adoptionRequests]);
 
+  // Sync queue logic: store operations locally and retry
+  type QueueOp = { id: string; method: string; path: string; body: any };
+
+  const readQueue = (): QueueOp[] => {
+    try {
+      const raw = localStorage.getItem(StorageKeys.queue);
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) {
+      return [];
+    }
+  };
+
+  const writeQueue = (q: QueueOp[]) => {
+    try { localStorage.setItem(StorageKeys.queue, JSON.stringify(q)); } catch (e) {}
+  };
+
+  const enqueue = (op: Omit<QueueOp, "id">) => {
+    const q = readQueue();
+    q.push({ id: generateId(), ...op });
+    writeQueue(q);
+  };
+
+  const processQueue = async () => {
+    const q = readQueue();
+    if (!q.length) return;
+    const remaining: QueueOp[] = [];
+    for (const op of q) {
+      try {
+        const res = await apiFetch(op.path, { method: op.method, body: JSON.stringify(op.body) });
+        // apply server result locally if possible
+        if (op.path.startsWith("/api/pets") && res) setPets((s) => [res as Pet, ...s.filter((p) => p.id !== (res as any).id)]);
+        if (op.path.startsWith("/api/medical-records") && res) setHealthRecords((s) => [res as HealthRecord, ...s.filter((r) => r.id !== (res as any).id)]);
+        if (op.path.startsWith("/api/posts") && res) setPosts((s) => [res as Post, ...s.filter((p) => p.id !== (res as any).id)]);
+        if (op.path.startsWith("/api/alerts") && res) setAlerts((s) => [res as Alert, ...s.filter((a) => a.id !== (res as any).id)]);
+        if (op.path.startsWith("/api/adoptions") && res) setAdoptionRequests((s) => [res as AdoptionRequest, ...s.filter((a) => a.id !== (res as any).id)]);
+      } catch (e) {
+        remaining.push(op);
+      }
+    }
+    writeQueue(remaining);
+  };
+
+  // poll queue every 20s and on online
+  useEffect(() => {
+    const iv = setInterval(processQueue, 20000);
+    window.addEventListener("online", processQueue);
+    return () => {
+      clearInterval(iv);
+      window.removeEventListener("online", processQueue);
+    };
+  }, []);
+
+  // CRUD operations — prefer server, fallback to local + queue
   const addPet = async (p: Omit<Pet, "id">) => {
     try {
       const created = await apiFetch("/api/pets", { method: "POST", body: JSON.stringify(p) });
@@ -185,9 +244,9 @@ export const PetProvider = ({ children }: { children: React.ReactNode }) => {
       toast({ title: "Pet created", description: `${(created as Pet).name} added.` });
       return created as Pet;
     } catch (e) {
-      // fallback to local
       const newPet: Pet = { ...p, id: generateId() };
       setPets((s) => [newPet, ...s]);
+      enqueue({ method: "POST", path: "/api/pets", body: newPet });
       toast({ title: "Offline: Pet saved locally", description: `Saved ${newPet.name} locally.` });
       return newPet;
     }
@@ -208,6 +267,7 @@ export const PetProvider = ({ children }: { children: React.ReactNode }) => {
     } catch (e) {
       const record: HealthRecord = { ...r, id: generateId(), date: r.date || new Date().toISOString() } as HealthRecord;
       setHealthRecords((s) => [record, ...s]);
+      enqueue({ method: "POST", path: "/api/medical-records", body: record });
       toast({ title: "Offline: Health record saved locally" });
       return record;
     }
@@ -224,6 +284,7 @@ export const PetProvider = ({ children }: { children: React.ReactNode }) => {
     } catch (e) {
       const alert: Alert = { ...a, id: generateId(), date: a.date || new Date().toISOString(), resolved: a.resolved || false };
       setAlerts((s) => [alert, ...s]);
+      enqueue({ method: "POST", path: "/api/alerts", body: alert });
       toast({ title: "Offline: Alert saved locally" });
       return alert;
     }
@@ -240,6 +301,7 @@ export const PetProvider = ({ children }: { children: React.ReactNode }) => {
     } catch (e) {
       const post: Post = { ...p, id: generateId(), date: new Date().toISOString() };
       setPosts((s) => [post, ...s]);
+      enqueue({ method: "POST", path: "/api/posts", body: post });
       toast({ title: "Offline: Post saved locally" });
       return post;
     }
@@ -256,6 +318,7 @@ export const PetProvider = ({ children }: { children: React.ReactNode }) => {
     } catch (e) {
       const req: AdoptionRequest = { ...r, id: generateId(), date: new Date().toISOString(), status: "pending" } as AdoptionRequest;
       setAdoptionRequests((s) => [req, ...s]);
+      enqueue({ method: "POST", path: "/api/adoptions", body: req });
       toast({ title: "Offline: Adoption request saved locally" });
       return req;
     }
@@ -269,6 +332,7 @@ export const PetProvider = ({ children }: { children: React.ReactNode }) => {
         alerts,
         posts,
         adoptionRequests,
+        loading,
         addPet,
         updatePet,
         getPet,
