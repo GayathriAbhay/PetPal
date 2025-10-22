@@ -47,6 +47,8 @@
     "@tidbcloud/prisma-adapter": "^6.12.0",
     "@tidbcloud/serverless": "^0.2.0",
     "bcryptjs": "^3.0.2",
+    "jsonwebtoken": "^9.0.0",
+    "nodemailer": "^6.9.5",
     "class-variance-authority": "^0.7.1",
     "classnames": "^2.5.1",
     "clsx": "^2.1.1",
