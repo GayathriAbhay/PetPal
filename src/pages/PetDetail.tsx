@@ -9,6 +9,7 @@ const PetDetail = () => {
   const { getPet, getHealthForPet, addHealthRecord, requestAdoption } = usePetContext();
   const pet = id ? getPet(id) : undefined;
   const records = id ? getHealthForPet(id) : [];
+  const { loading } = (usePetContext() as any);
   const [note, setNote] = useState("");
   const [requestName, setRequestName] = useState("");
 
