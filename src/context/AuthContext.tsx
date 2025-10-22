@@ -84,7 +84,29 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     toast({ title: "Signed out", description: "You have been signed out." });
   };
 
-  return <AuthContext.Provider value={{ user, login, register, logout }}>{children}</AuthContext.Provider>;
+  const updateProfile = async ({ name, email }: { name?: string; email?: string }) => {
+    try {
+      const res = await apiFetch("/api/auth/update-profile", { method: "POST", body: JSON.stringify({ name, email }) });
+      setUser(res);
+      toast({ title: "Profile updated" });
+      return res;
+    } catch (e: any) {
+      toast({ title: "Update failed", description: e.message || String(e) });
+      throw e;
+    }
+  };
+
+  const changePassword = async ({ currentPassword, newPassword }: { currentPassword: string; newPassword: string }) => {
+    try {
+      await apiFetch("/api/auth/change-password", { method: "POST", body: JSON.stringify({ currentPassword, newPassword }) });
+      toast({ title: "Password changed" });
+    } catch (e: any) {
+      toast({ title: "Change password failed", description: e.message || String(e) });
+      throw e;
+    }
+  };
+
+  return <AuthContext.Provider value={{ user, login, register, logout, updateProfile, changePassword }}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => {
