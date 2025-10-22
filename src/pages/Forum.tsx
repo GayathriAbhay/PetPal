@@ -3,7 +3,7 @@ import { usePetContext } from "@/context/PetContext";
 import { Button } from "@/components/ui/button";
 
 const Forum = () => {
-  const { posts, addPost } = usePetContext();
+  const { posts, addPost, loading } = usePetContext();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [author, setAuthor] = useState("");
