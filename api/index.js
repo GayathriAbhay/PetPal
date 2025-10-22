@@ -248,7 +248,7 @@ export default async function handler(req, res) {
 
     // HEALTH
     if (pathname === '/api/health' && req.method === 'GET') {
-      return res.json({ ok: true });
+      return res.status(200).send('hello');
     }
 
     return res.status(404).json({ error: 'Not found' });
