@@ -12,13 +12,19 @@ const Pets = () => {
           <h2 className="text-3xl font-bold">Available Pets</h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {pets.map((p) => (
-            <Link key={p.id} to={`/pets/${p.id}`}>
-              <PetCard {...p} />
-            </Link>
-          ))}
-        </div>
+        {loading ? (
+          <div className="flex items-center justify-center py-12">
+            <div className="loader" />
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {pets.map((p) => (
+              <Link key={p.id} to={`/pets/${p.id}`}>
+                <PetCard {...p} />
+              </Link>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
