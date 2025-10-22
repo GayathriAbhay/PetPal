@@ -69,3 +69,37 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
+// --- Application Models ---
+
+model Pet {
+  id            String          @id @default(cuid())
+  name          String
+  species       String          // e.g., Dog, Cat
+  breed         String?
+  age           Int?
+  sex           String?
+  neutered      Boolean?        @default(false)
+  microchip     String?
+  color         String?
+  weightKg      Float?
+  bio           String?         @db.Text
+  createdAt     DateTime        @default(now())
+  medicalRecords MedicalRecord[]
+
+  @@map("pets")
+}
+
+model MedicalRecord {
+  id          String   @id @default(cuid())
+  petId       String
+  pet         Pet      @relation(fields: [petId], references: [id], onDelete: Cascade)
+  date        DateTime @default(now())
+  description String?  @db.Text
+  diagnosis   String?
+  treatment   String?  @db.Text
+  vetName     String?
+  notes       String?  @db.Text
+  createdAt   DateTime @default(now())
+
+  @@map("medical_records")
+}
