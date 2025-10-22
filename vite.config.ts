@@ -19,4 +19,9 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  // Provide a minimal process.env polyfill so libraries that reference
+  // `process` in the browser (like next-auth/react) don't throw.
+  define: {
+    'process.env': {},
+  },
 }));
