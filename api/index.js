@@ -16,6 +16,19 @@ export default async function handler(req, res) {
     const url = new URL(req.url, `http://${req.headers.host}`);
     const pathname = url.pathname; // e.g. /api/auth/register or /api/pets
 
+    // --- START: FIX CORS PREFLIGHT (OPTIONS) HANDLER ---
+    // This is required for Vercel Serverless Functions when client and API are on different subdomains.
+    if (req.method === 'OPTIONS') {
+        // Set headers to allow necessary methods and headers
+        res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*'); 
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Cookie');
+        res.setHeader('Access-Control-Allow-Credentials', 'true');
+        // Return 204 No Content for successful preflight check
+        return res.status(204).end(); 
+    }
+    // --- END: FIX CORS PREFLIGHT (OPTIONS) HANDLER ---
+
     // AUTH: register
     if (pathname === '/api/auth/register' && req.method === 'POST') {
       const { name, email, password } = req.body || {};
