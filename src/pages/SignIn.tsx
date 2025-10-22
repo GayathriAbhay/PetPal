@@ -52,6 +52,11 @@ const SignIn = () => {
               <Button type="submit" variant="hero" disabled={loading}>{loading ? (isRegister ? "Creating..." : "Signing in...") : (isRegister ? "Create" : "Sign In")}</Button>
             </div>
           </div>
+          {!isRegister && (
+            <div className="mt-2 text-sm">
+              <a href="/forgot" className="text-primary hover:underline">Forgot password?</a>
+            </div>
+          )}
         </form>
       </div>
     </div>
