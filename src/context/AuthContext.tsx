@@ -13,6 +13,8 @@ type AuthContextValue = {
   login: (data: { email: string; password: string }) => Promise<User>;
   register: (data: { name?: string; email: string; password: string }) => Promise<User>;
   logout: () => void;
+  updateProfile: (data: { name?: string; email?: string }) => Promise<User>;
+  changePassword: (data: { currentPassword: string; newPassword: string }) => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
