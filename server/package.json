@@ -1,0 +1,21 @@
+{
+  "name": "petpal-server",
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "start": "node index.mjs",
+    "dev": "nodemon --watch . --ext mjs,js --exec node index.mjs"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.17.1",
+    "@tidbcloud/prisma-adapter": "^6.12.0",
+    "@tidbcloud/serverless": "^0.2.0",
+    "bcryptjs": "^3.0.2",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "nodemailer": "^6.9.5"
+  }
+}
