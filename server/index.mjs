@@ -109,7 +109,7 @@ app.post("/api/auth/reset-password", async (req, res) => {
   if (!token || !password) return res.status(400).json({ error: "Missing token or password" });
   try {
     const data = jwt.verify(token, JWT_SECRET);
-    const userId = (data as any).id;
+    const userId = data && typeof data === 'object' ? data.id : null;
     const hash = await bcrypt.hash(password, 10);
     await prisma.user.update({ where: { id: userId }, data: { password: hash } });
     res.json({ ok: true });
@@ -137,7 +137,7 @@ app.post("/api/auth/update-profile", authMiddleware, async (req, res) => {
   const { name, email } = req.body;
   const { id } = req.user || {};
   if (!id) return res.status(401).json({ error: "Unauthorized" });
-  const update: any = {};
+  const update = {};
   if (name) update.name = name;
   if (email) update.email = email;
   try {
