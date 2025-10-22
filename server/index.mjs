@@ -103,6 +103,51 @@ app.post("/api/auth/forgot", async (req, res) => {
   res.json({ ok: true });
 });
 
+// Reset password using token
+app.post("/api/auth/reset-password", async (req, res) => {
+  const { token, password } = req.body;
+  if (!token || !password) return res.status(400).json({ error: "Missing token or password" });
+  try {
+    const data = jwt.verify(token, JWT_SECRET);
+    const userId = (data as any).id;
+    const hash = await bcrypt.hash(password, 10);
+    await prisma.user.update({ where: { id: userId }, data: { password: hash } });
+    res.json({ ok: true });
+  } catch (e) {
+    return res.status(400).json({ error: "Invalid or expired token" });
+  }
+});
+
+// Change password while authenticated
+app.post("/api/auth/change-password", authMiddleware, async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+  if (!currentPassword || !newPassword) return res.status(400).json({ error: "Missing passwords" });
+  const { id } = req.user || {};
+  const user = await prisma.user.findUnique({ where: { id } });
+  if (!user || !user.password) return res.status(400).json({ error: "User not found" });
+  const ok = await bcrypt.compare(currentPassword, user.password);
+  if (!ok) return res.status(400).json({ error: "Current password incorrect" });
+  const hash = await bcrypt.hash(newPassword, 10);
+  await prisma.user.update({ where: { id }, data: { password: hash } });
+  res.json({ ok: true });
+});
+
+// Update profile (name/email)
+app.post("/api/auth/update-profile", authMiddleware, async (req, res) => {
+  const { name, email } = req.body;
+  const { id } = req.user || {};
+  if (!id) return res.status(401).json({ error: "Unauthorized" });
+  const update: any = {};
+  if (name) update.name = name;
+  if (email) update.email = email;
+  try {
+    const user = await prisma.user.update({ where: { id }, data: update, select: { id: true, name: true, email: true } });
+    res.json(user);
+  } catch (e) {
+    res.status(400).json({ error: "Could not update profile" });
+  }
+});
+
 // API: pets
 app.get("/api/pets", async (req, res) => {
   const pets = await prisma.pet.findMany({ include: { medicalRecords: true } });
