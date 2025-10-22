@@ -74,6 +74,13 @@ app.post("/api/auth/logout", (req, res) => {
   res.json({ ok: true });
 });
 
+app.get("/api/me", authMiddleware, async (req, res) => {
+  const { id } = req.user || {};
+  if (!id) return res.status(401).json({ error: "Unauthorized" });
+  const user = await prisma.user.findUnique({ where: { id }, select: { id: true, name: true, email: true } });
+  res.json(user);
+});
+
 // Password reset (forgot) - generate token and send email
 app.post("/api/auth/forgot", async (req, res) => {
   const { email } = req.body;
@@ -130,6 +137,30 @@ app.post("/api/posts", authMiddleware, async (req, res) => {
   const data = req.body;
   const post = await prisma.post.create({ data });
   res.status(201).json(post);
+});
+
+// API: adoption requests
+app.get("/api/adoptions", authMiddleware, async (req, res) => {
+  const list = await prisma.adoptionRequest.findMany({ orderBy: { date: "desc" } });
+  res.json(list);
+});
+
+app.post("/api/adoptions", authMiddleware, async (req, res) => {
+  const data = req.body;
+  const r = await prisma.adoptionRequest.create({ data });
+  res.status(201).json(r);
+});
+
+// API: alerts (lightweight)
+app.get("/api/alerts", async (req, res) => {
+  const alerts = await prisma.alert.findMany({ orderBy: { date: "desc" } });
+  res.json(alerts);
+});
+
+app.post("/api/alerts", authMiddleware, async (req, res) => {
+  const data = req.body;
+  const a = await prisma.alert.create({ data });
+  res.status(201).json(a);
 });
 
 // simple health check
