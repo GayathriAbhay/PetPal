@@ -13,6 +13,8 @@ import Alerts from "@/pages/Alerts";
 import Forum from "@/pages/Forum";
 import Care from "@/pages/Care";
 import SignIn from "@/pages/SignIn";
+import Account from "@/pages/Account";
+import ResetPassword from "@/pages/ResetPassword";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { AuthProvider } from "@/context/AuthContext";
 
