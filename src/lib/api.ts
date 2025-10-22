@@ -6,7 +6,7 @@ export async function apiFetch(path: string, options: RequestInit = {}) {
     const text = await res.text();
     let body = text;
     try { body = JSON.parse(text); } catch (e) {}
-    throw new Error(body && body.error ? body.error : `Request failed: ${res.status}`);
+    throw new Error(typeof body === 'object' && body !== null && 'error' in body && typeof body.error === 'string' ? body.error : `Request failed: ${res.status}`);
   }
   try {
     return await res.json();
