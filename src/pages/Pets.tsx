@@ -3,7 +3,7 @@ import { usePetContext } from "@/context/PetContext";
 import PetCard from "@/components/PetCard";
 
 const Pets = () => {
-  const { pets } = usePetContext();
+  const { pets, loading } = usePetContext();
 
   return (
     <section className="py-12">
