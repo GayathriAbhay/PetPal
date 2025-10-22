@@ -83,26 +83,51 @@ const StorageKeys = {
 };
 
 const defaultPets: Pet[] = [
-  {
-    id: "1",
-    name: "Luna",
-    breed: "Golden Retriever",
-    age: "2 years",
-    location: "San Francisco, CA",
-    image: "https://images.unsplash.com/photo-1552053831-71594a27632d?w=800&h=800&fit=crop&crop=faces",
-    description: "Luna is a gentle, loving dog who adores children and other pets. She's house-trained and knows basic commands.",
-    status: "available",
-  },
-  {
-    id: "2",
-    name: "Whiskers",
-    breed: "Maine Coon",
-    age: "3 years",
-    location: "Oakland, CA",
-    image: "https://images.unsplash.com/photo-1574158622682-e40e69881006?w=800&h=800&fit=crop&crop=faces",
-    description: "Whiskers is a calm and affectionate cat who loves to cuddle. Perfect for families looking for a gentle companion.",
-    status: "available",
-  },
+  { id: "p1", name: "Bella", breed: "Labrador Retriever", age: "4 years", location: "San Francisco, CA", image: "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=800&q=80", description: "Loves fetch and swimming. Great with kids.", status: "available" },
+  { id: "p2", name: "Charlie", breed: "Beagle", age: "3 years", location: "Oakland, CA", image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&q=80", description: "Curious and energetic. Great for active families.", status: "available" },
+  { id: "p3", name: "Luna", breed: "Golden Retriever", age: "2 years", location: "San Jose, CA", image: "https://images.unsplash.com/photo-1552053831-71594a27632d?w=800&q=80", description: "Gentle and loving. Knows basic commands.", status: "available" },
+  { id: "p4", name: "Max", breed: "German Shepherd", age: "5 years", location: "San Francisco, CA", image: "https://images.unsplash.com/photo-1530281700549-e82e7bf110d6?w=800&q=80", description: "Loyal and intelligent. Needs daily exercise.", status: "available" },
+  { id: "p5", name: "Molly", breed: "Poodle", age: "1 year", location: "Berkeley, CA", image: "https://images.unsplash.com/photo-1543852786-1cf6624b9987?w=800&q=80", description: "Playful and very smart.", status: "available" },
+  { id: "p6", name: "Simba", breed: "Domestic Short Hair", age: "3 years", location: "Oakland, CA", image: "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=800&q=80", description: "Affectionate cat who loves naps.", status: "available" },
+  { id: "p7", name: "Oliver", breed: "Maine Coon", age: "4 years", location: "San Mateo, CA", image: "https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?w=800&q=80", description: "Calm and gentle giant.", status: "available" },
+  { id: "p8", name: "Lucy", breed: "Siamese", age: "2 years", location: "San Francisco, CA", image: "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=800&q=80&crop=faces", description: "Talkative and affectionate.", status: "available" },
+  { id: "p9", name: "Bailey", breed: "Beagle", age: "6 years", location: "Palo Alto, CA", image: "https://images.unsplash.com/photo-1507149833265-60c372daea22?w=800&q=80", description: "Friendly and great with kids.", status: "available" },
+  { id: "p10", name: "Cooper", breed: "Border Collie", age: "3 years", location: "Redwood City, CA", image: "https://images.unsplash.com/photo-1517423440428-a5a00ad493e8?w=800&q=80", description: "Energetic and highly trainable.", status: "available" },
+  { id: "p11", name: "Daisy", breed: "Shih Tzu", age: "2 years", location: "San Francisco, CA", image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&q=80&crop=faces", description: "Small and cuddly. Apartment friendly.", status: "available" },
+  { id: "p12", name: "Loki", breed: "Mixed", age: "5 years", location: "Oakland, CA", image: "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?w=800&q=80", description: "Mischievous but loving.", status: "available" },
+  { id: "p13", name: "Rocky", breed: "Boxer", age: "4 years", location: "San Jose, CA", image: "https://images.unsplash.com/photo-1525253086316-d0c936c814f8?w=800&q=80", description: "Playful and athletic.", status: "available" },
+  { id: "p14", name: "Sadie", breed: "Bulldog", age: "3 years", location: "Fremont, CA", image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&q=80&crop=faces", description: "Calm and good with kids.", status: "available" },
+  { id: "p15", name: "Toby", breed: "Mixed", age: "2 years", location: "Mountain View, CA", image: "https://images.unsplash.com/photo-1507149833265-60c372daea22?w=800&q=80&crop=faces", description: "Friendly and adaptable.", status: "available" },
+  { id: "p16", name: "Angel", breed: "Rabbit - Dutch", age: "1 year", location: "San Jose, CA", image: "https://images.unsplash.com/photo-1509099836639-18ba80b8b3d1?w=800&q=80", description: "Gentle and quiet.", status: "available" },
+  { id: "p17", name: "Zoey", breed: "Parakeet", age: "1 year", location: "San Francisco, CA", image: "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=800&q=80", description: "Chirpy and bright.", status: "available" },
+  { id: "p18", name: "Chloe", breed: "Persian", age: "4 years", location: "Oakland, CA", image: "https://images.unsplash.com/photo-1525253086316-d0c936c814f8?w=800&q=80&crop=faces", description: "Luxurious coat and calm temperament.", status: "available" },
+  { id: "p19", name: "Harley", breed: "Husky", age: "3 years", location: "San Mateo, CA", image: "https://images.unsplash.com/photo-1517423440428-a5a00ad493e8?w=800&q=80&crop=faces", description: "Active and loves the outdoors.", status: "available" },
+  { id: "p20", name: "Ruby", breed: "Cocker Spaniel", age: "2 years", location: "Palo Alto, CA", image: "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?w=800&q=80&crop=faces", description: "Sweet-natured and playful.", status: "available" },
+];
+
+const defaultHealthRecords: HealthRecord[] = [
+  { id: 'hr1', petId: 'p1', title: 'Annual Vaccination', notes: 'Rabies and DHPP given. Recommended flea prevention.', date: new Date().toISOString() },
+  { id: 'hr2', petId: 'p2', title: 'Wellness Check', notes: 'Good condition. Slight ear wax.', date: new Date().toISOString() },
+  { id: 'hr3', petId: 'p3', title: 'Spay/Neuter Follow-up', notes: 'Healing well.', date: new Date().toISOString() },
+  { id: 'hr4', petId: 'p4', title: 'Injury Treatment', notes: 'Stitches removed. Advised rest.', date: new Date().toISOString() },
+  { id: 'hr5', petId: 'p5', title: 'Puppy Vaccination', notes: 'First set of shots completed.', date: new Date().toISOString() },
+  { id: 'hr6', petId: 'p6', title: 'Dental Check', notes: 'Recommended tooth cleaning.', date: new Date().toISOString() },
+];
+
+const defaultPosts: Post[] = [
+  { id: 'post1', author: 'Admin', title: 'Welcome to PetPal Forum', content: 'Share tips, lost & found notices, and adoption stories here!', date: new Date().toISOString() },
+  { id: 'post2', author: 'Jane', title: 'Best low-cost vets in SF', content: 'I recommend Downtown Vet and Happy Paws Clinic for affordable care.', date: new Date().toISOString() },
+  { id: 'post3', author: 'Alex', title: 'Puppy training basics', content: 'Start with crate training and short positive sessions.', date: new Date().toISOString() },
+];
+
+const defaultAlerts: Alert[] = [
+  { id: 'a1', petId: 'p9', title: 'Lost - Brown Tabby', location: 'Elm Street, Palo Alto', resolved: false, date: new Date().toISOString() },
+  { id: 'a2', petId: 'p14', title: 'Found - Small dog near Market St', location: 'Market St, SF', resolved: false, date: new Date().toISOString() },
+];
+
+const defaultAdoptionRequests: AdoptionRequest[] = [
+  { id: 'ar1', petId: 'p2', requester: 'Sam', message: 'Looking to adopt a friendly beagle.', date: new Date().toISOString(), status: 'pending' },
+  { id: 'ar2', petId: 'p5', requester: 'Nina', message: 'Interested in Molly for my family.', date: new Date().toISOString(), status: 'pending' },
 ];
 
 const PetContext = createContext<PetContextValue | undefined>(undefined);
@@ -120,36 +145,36 @@ export const PetProvider = ({ children }: { children: React.ReactNode }) => {
   const [healthRecords, setHealthRecords] = useState<HealthRecord[]>(() => {
     try {
       const raw = localStorage.getItem(StorageKeys.health);
-      return raw ? JSON.parse(raw) : [];
+      return raw ? JSON.parse(raw) : defaultHealthRecords;
     } catch (e) {
-      return [];
+      return defaultHealthRecords;
     }
   });
 
   const [alerts, setAlerts] = useState<Alert[]>(() => {
     try {
       const raw = localStorage.getItem(StorageKeys.alerts);
-      return raw ? JSON.parse(raw) : [];
+      return raw ? JSON.parse(raw) : defaultAlerts;
     } catch (e) {
-      return [];
+      return defaultAlerts;
     }
   });
 
   const [posts, setPosts] = useState<Post[]>(() => {
     try {
       const raw = localStorage.getItem(StorageKeys.posts);
-      return raw ? JSON.parse(raw) : [];
+      return raw ? JSON.parse(raw) : defaultPosts;
     } catch (e) {
-      return [];
+      return defaultPosts;
     }
   });
 
   const [adoptionRequests, setAdoptionRequests] = useState<AdoptionRequest[]>(() => {
     try {
       const raw = localStorage.getItem(StorageKeys.adoption);
-      return raw ? JSON.parse(raw) : [];
+      return raw ? JSON.parse(raw) : defaultAdoptionRequests;
     } catch (e) {
-      return [];
+      return defaultAdoptionRequests;
     }
   });
 
