@@ -36,6 +36,8 @@ const App = () => (
                 <Route path="/add-pet" element={<AddPet />} />
                 <Route path="/care" element={<Care />} />
                 <Route path="/sign-in" element={<SignIn />} />
+                <Route path="/account" element={<Account />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
                 <Route path="/alerts" element={<Alerts />} />
                 <Route path="/forum" element={<Forum />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
